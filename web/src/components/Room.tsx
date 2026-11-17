@@ -38,6 +38,7 @@ export default function Room({ code, onLeave }: { code: string; onLeave: () => v
       'game:turn-start': (d) => { setChoose(null); setTurnEnd(null); setGameEnd(null); setWord(d.word ?? ''); setHint(''); setOffset(d.serverTime - Date.now()); },
       'game:hint': (d) => { if (d.text) setHint(d.text); },
       'game:turn-end': (d: TurnEnd) => { setChoose(null); setTurnEnd(d); },
+      'room:kicked': () => { toast('Gospodarz usunął Cię z pokoju.', 'error'); onLeave(); },
       'game:end': (d: GameEnd) => { setTurnEnd(null); setChoose(null); setGameEnd(d); },
       'draw:stroke': (s: Stroke) => board.current?.applyStroke(s),
       'draw:undo': () => board.current?.undo(),
@@ -112,6 +113,7 @@ export default function Room({ code, onLeave }: { code: string; onLeave: () => v
                 </div>
                 <div className="text-right"><div className="font-mono text-sm font-bold">{p.score}</div>
                 </div>
+                {isHost && p.userId !== user.id && <button onClick={() => { if (window.confirm(`Usunąć gracza ${p.username} z pokoju?`)) emit('room:kick', { userId: p.userId }); }} title="Usuń z pokoju" aria-label={`Usuń gracza ${p.username} z pokoju`} className="rounded p-1 text-xs text-slate-300 hover:bg-slate-100 hover:text-rose-600">✕</button>}
                 {p.userId !== user.id && <button onClick={() => setReportFor({ id: p.userId, name: p.username })} title="Zgłoś gracza" aria-label={`Zgłoś gracza ${p.username}`} className="rounded p-1 text-xs text-slate-300 hover:bg-slate-100 hover:text-rose-600">⚑</button>}
               </li>
             ))}
@@ -184,6 +186,9 @@ function LobbyPanel({ room, isHost, onSettings, onStart, onCopy }: { room: RoomS
             <div><Label htmlFor="rrt">Czas (s)</Label><input id="rrt" type="number" min={20} max={180} step={10} className={inputCls} value={s.roundTimeSeconds} onChange={(e) => onSettings({ roundTimeSeconds: Number(e.target.value) })} /></div>
             <div><Label htmlFor="rrd">Rundy</Label><input id="rrd" type="number" min={1} max={10} className={inputCls} value={s.rounds} onChange={(e) => onSettings({ rounds: Number(e.target.value) })} /></div>
           </div>
+          <div><Label htmlFor="rsl">Limit punktów (mecz kończy się, gdy ktoś go osiągnie)</Label>
+            <select id="rsl" className={inputCls} value={s.scoreLimit ?? ''} onChange={(e) => onSettings({ scoreLimit: e.target.value ? Number(e.target.value) : null })}>
+              <option value="">Bez limitu (tylko rundy)</option>{[200, 300, 500, 800, 1000].map((n) => <option key={n} value={n}>{n} punktów</option>)}</select></div>
           {s.difficulty === 'HARD' && <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">W rundach trudnych zgadujący dostają w połowie czasu podpowiedź opisową z bazy wiedzy.</p>}
         </fieldset>
       </div>

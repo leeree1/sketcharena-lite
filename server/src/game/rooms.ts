@@ -8,7 +8,9 @@ import { Room } from './room';
 import { pickWords } from './words';
 import { saveResults } from './results';  
 
-export const DEFAULT_SETTINGS: RoomSettings = { difficulty: 'EASY', categorySlug: null, maxPlayers: 8, roundTimeSeconds: 80, rounds: 3, isPrivate: false };
+export const DEFAULT_SETTINGS: RoomSettings = { difficulty: 'EASY', categorySlug: null, maxPlayers: 8, roundTimeSeconds: 80, rounds: 3, isPrivate: false, scoreLimit: null };
+/** Limit punktów: wartość poniżej 100 oznacza brak limitu (górna granica 5000) */
+export const parseScoreLimit = (v: unknown): number | null => { const n = Number(v); return Number.isFinite(n) && n >= 100 ? Math.min(5000, Math.round(n)) : null; };
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';           // bez znaków łatwych do pomylenia (0/O, 1/I)
 const randomCode = () => Array.from({ length: 6 }, () => CODE_ALPHABET[Math.floor(Math.random() * CODE_ALPHABET.length)]).join('');
 
@@ -106,6 +108,7 @@ export function roomsRouter(rooms: RoomManager): Router {
       roundTimeSeconds: Math.min(180, Math.max(20, Number(b.roundTimeSeconds) || DEFAULT_SETTINGS.roundTimeSeconds)),
       rounds: Math.min(10, Math.max(1, Number(b.rounds) || DEFAULT_SETTINGS.rounds)),
       isPrivate: b.isPrivate === true,
+      scoreLimit: parseScoreLimit(b.scoreLimit),
     };
     if (settings.categorySlug && !(await queryOne('SELECT 1 FROM categories WHERE slug = $1', [settings.categorySlug]))) {
       throw new HttpError(400, 'Nieznana kategoria haseł.');

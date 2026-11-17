@@ -7,6 +7,7 @@ export interface RoomSettings {
   roundTimeSeconds: number;
   rounds: number;
   isPrivate: boolean;
+  scoreLimit: number | null;   // mecz kończy się, gdy ktoś osiągnie tyle punktów (null = bez limitu)
 }
 
 export interface Word { id: string; word: string; difficulty: Difficulty; hint: string }

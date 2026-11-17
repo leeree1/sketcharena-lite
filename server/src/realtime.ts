@@ -4,7 +4,7 @@ import { AuthUser, verifyToken } from './auth';
 import { activeBan } from './bans';
 import { config } from './config';
 import { GameError } from './game/engine';
-import { RoomManager } from './game/rooms';
+import { RoomManager, parseScoreLimit } from './game/rooms';
 import { Room } from './game/room';
 import { Emitter } from './types';
 
@@ -94,6 +94,7 @@ export function attachSocket(io: Server, rooms: RoomManager) {
     on('room:join', (data, ack) => {
       const room = rooms.get(String(data.code ?? ''));
       if (!room) throw new GameError('Pokój o tym kodzie nie istnieje.');
+      if (room.kicked.has(user.id)) throw new GameError('Gospodarz usunął Cię z tego pokoju.');
       const existing = room.players.get(user.id);
       if (!existing && room.players.size >= room.settings.maxPlayers) throw new GameError('Pokój jest pełny.');
       if (socket.data.roomCode && socket.data.roomCode !== room.code) leave(socket, true);
@@ -121,7 +122,25 @@ export function attachSocket(io: Server, rooms: RoomManager) {
       if (Number.isFinite(data.maxPlayers)) s.maxPlayers = Math.min(12, Math.max(room.players.size, 2, data.maxPlayers));
       if (Number.isFinite(data.roundTimeSeconds)) s.roundTimeSeconds = Math.min(180, Math.max(20, data.roundTimeSeconds));
       if (Number.isFinite(data.rounds)) s.rounds = Math.min(10, Math.max(1, data.rounds));
+      if (data.scoreLimit === null || Number.isFinite(data.scoreLimit)) s.scoreLimit = parseScoreLimit(data.scoreLimit);
       room.settings = s;
+      broadcast(room);
+    });
+
+    // Gospodarz usuwa gracza z pokoju (serwer sprawdza, czy to naprawdę gospodarz)
+    on('room:kick', (data) => {
+      const room = currentRoom();
+      if (room.hostId !== user.id) throw new GameError('Tylko gospodarz może usuwać graczy.');
+      const targetId = String(data.userId ?? '');
+      const target = room.players.get(targetId);
+      if (!target || targetId === user.id) throw new GameError('Nie można usunąć tego gracza.');
+      room.kicked.add(targetId);
+      io.to(`user:${targetId}`).emit('room:kicked', { code: room.code });   // usunięty gracz dostaje powiadomienie
+      io.in(`user:${targetId}`).socketsLeave(room.code);
+      target.socketIds.clear();
+      room.removePlayer(targetId);
+      sys(room.code, `${target.username} został(a) usunięty(-a) z pokoju przez gospodarza.`);
+      room.engine.onPlayerGone(targetId);
       broadcast(room);
     });
 

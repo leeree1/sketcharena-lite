@@ -88,6 +88,8 @@ export class GameEngine {
   // ---------- kolejna tura ----------
   private async nextTurn() {
     this.clearTimers();
+    const limit = this.room.settings.scoreLimit;             // limit punktów ustawiony przez gospodarza
+    if (limit && [...this.room.players.values()].some((p) => p.score >= limit)) return this.finish();
     let drawerId: string | undefined;
     for (;;) {
       if (this.room.connectedPlayers().length < config.minPlayers) return this.abort();

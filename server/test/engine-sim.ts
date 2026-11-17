@@ -17,7 +17,7 @@ const words = [
 ];
 
 async function main() {
-  const room = new Room('id1', 'ABC123', 'u1', { difficulty: 'EASY', categorySlug: null, maxPlayers: 4, roundTimeSeconds: 30, rounds: 1, isPrivate: false });
+  const room = new Room('id1', 'ABC123', 'u1', { difficulty: 'EASY', categorySlug: null, maxPlayers: 4, roundTimeSeconds: 30, rounds: 1, isPrivate: false, scoreLimit: null });
   room.engine = new GameEngine(room, {
     emitter, pickWords: async () => words, onChange: () => {},
     onFinish: async (_r, ranking) => { console.log('\nRANKING:', ranking.map((r) => `${r.rank}. ${r.username} ${r.score} pkt`).join(' | ')); },

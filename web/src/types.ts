@@ -2,7 +2,7 @@ export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
 export type Role = 'GUEST' | 'PLAYER' | 'MODERATOR' | 'ADMIN';
 export interface User { id: string; username: string; role: Role }
-export interface RoomSettings { difficulty: Difficulty; categorySlug: string | null; maxPlayers: number; roundTimeSeconds: number; rounds: number; isPrivate: boolean }
+export interface RoomSettings { difficulty: Difficulty; categorySlug: string | null; maxPlayers: number; roundTimeSeconds: number; rounds: number; isPrivate: boolean; scoreLimit: number | null }
 export interface RoomSummary { code: string; hostName: string; difficulty: Difficulty; category: string | null; players: number; maxPlayers: number; status: 'LOBBY' | 'IN_GAME'; rounds: number; roundTimeSeconds: number }
 export interface Category { id: number; slug: string; name: string; keywords: string[] }
 

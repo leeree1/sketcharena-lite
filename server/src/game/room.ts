@@ -21,6 +21,7 @@ export class Room {
   lastActive = Date.now();
   readonly createdAt = Date.now();
   engine!: GameEngine;
+  kicked = new Set<string>();        // gracze usunięci przez gospodarza (nie mogą wrócić do tego pokoju)
 
   constructor(public id: string, public code: string, public hostId: string, public settings: RoomSettings) {}
 
