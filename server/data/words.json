@@ -1,0 +1,572 @@
+{
+ "categories": [
+  {
+   "slug": "przedmioty",
+   "name": "Przedmioty codzienne",
+   "keywords": [
+    "przedmiot",
+    "rzecz",
+    "dom"
+   ]
+  },
+  {
+   "slug": "zwierzeta",
+   "name": "Zwierzęta",
+   "keywords": [
+    "zwierz",
+    "pies",
+    "kot"
+   ]
+  },
+  {
+   "slug": "jedzenie",
+   "name": "Jedzenie i kuchnia",
+   "keywords": [
+    "jedzen",
+    "potraw",
+    "kuchn",
+    "jesc"
+   ]
+  },
+  {
+   "slug": "zawody",
+   "name": "Zawody i praca",
+   "keywords": [
+    "zaw",
+    "prac"
+   ]
+  },
+  {
+   "slug": "przyroda",
+   "name": "Przyroda i pogoda",
+   "keywords": [
+    "przyrod",
+    "pogod"
+   ]
+  },
+  {
+   "slug": "emocje",
+   "name": "Emocje i abstrakcje",
+   "keywords": [
+    "emocj",
+    "abstrak",
+    "uczuc"
+   ]
+  },
+  {
+   "slug": "nauka",
+   "name": "Nauka i technika",
+   "keywords": [
+    "nauk",
+    "technik",
+    "fizyk",
+    "komputer"
+   ]
+  },
+  {
+   "slug": "historia",
+   "name": "Historia i kultura",
+   "keywords": [
+    "histor",
+    "kultur"
+   ]
+  },
+  {
+   "slug": "sport",
+   "name": "Sport i rozrywka",
+   "keywords": [
+    "sport",
+    "rozryw"
+   ]
+  }
+ ],
+ "words": [
+  {
+   "word": "krzesło",
+   "difficulty": "EASY",
+   "category": "przedmioty",
+   "hint": "Mebel, na którym siadamy przy stole."
+  },
+  {
+   "word": "parasol",
+   "difficulty": "EASY",
+   "category": "przedmioty",
+   "hint": "Chroni przed deszczem i można go złożyć."
+  },
+  {
+   "word": "klucz",
+   "difficulty": "EASY",
+   "category": "przedmioty",
+   "hint": "Otwiera zamek w drzwiach."
+  },
+  {
+   "word": "odkurzacz",
+   "difficulty": "MEDIUM",
+   "category": "przedmioty",
+   "hint": "Urządzenie do sprzątania podłogi, które głośno szumi."
+  },
+  {
+   "word": "latarnia",
+   "difficulty": "MEDIUM",
+   "category": "przedmioty",
+   "hint": "Oświetla ulicę albo wskazuje drogę statkom na morzu."
+  },
+  {
+   "word": "walizka",
+   "difficulty": "MEDIUM",
+   "category": "przedmioty",
+   "hint": "Pakujemy do niej rzeczy przed podróżą."
+  },
+  {
+   "word": "klepsydra",
+   "difficulty": "HARD",
+   "category": "przedmioty",
+   "hint": "Odmierza czas przesypującym się piaskiem."
+  },
+  {
+   "word": "kalejdoskop",
+   "difficulty": "HARD",
+   "category": "przedmioty",
+   "hint": "Tuba z lusterkami i kolorowymi szkiełkami, która tworzy wzory."
+  },
+  {
+   "word": "barometr",
+   "difficulty": "HARD",
+   "category": "przedmioty",
+   "hint": "Przyrząd do mierzenia ciśnienia atmosferycznego."
+  },
+  {
+   "word": "pies",
+   "difficulty": "EASY",
+   "category": "zwierzeta",
+   "hint": "Wierny przyjaciel człowieka, który szczeka."
+  },
+  {
+   "word": "kot",
+   "difficulty": "EASY",
+   "category": "zwierzeta",
+   "hint": "Mruczy i lubi mleko."
+  },
+  {
+   "word": "ryba",
+   "difficulty": "EASY",
+   "category": "zwierzeta",
+   "hint": "Pływa w wodzie i oddycha skrzelami."
+  },
+  {
+   "word": "żyrafa",
+   "difficulty": "MEDIUM",
+   "category": "zwierzeta",
+   "hint": "Zwierzę z bardzo długą szyją."
+  },
+  {
+   "word": "pingwin",
+   "difficulty": "MEDIUM",
+   "category": "zwierzeta",
+   "hint": "Ptak, który nie lata i żyje wśród lodu."
+  },
+  {
+   "word": "pająk",
+   "difficulty": "MEDIUM",
+   "category": "zwierzeta",
+   "hint": "Ma osiem odnóży i tka sieć."
+  },
+  {
+   "word": "kameleon",
+   "difficulty": "HARD",
+   "category": "zwierzeta",
+   "hint": "Gad, który potrafi zmieniać kolor skóry."
+  },
+  {
+   "word": "ośmiornica",
+   "difficulty": "HARD",
+   "category": "zwierzeta",
+   "hint": "Morskie zwierzę z ośmioma ramionami."
+  },
+  {
+   "word": "ornitorynek",
+   "difficulty": "HARD",
+   "category": "zwierzeta",
+   "hint": "Dziwny ssak z dziobem kaczki, który składa jaja."
+  },
+  {
+   "word": "jabłko",
+   "difficulty": "EASY",
+   "category": "jedzenie",
+   "hint": "Owoc, który może być czerwony lub zielony."
+  },
+  {
+   "word": "chleb",
+   "difficulty": "EASY",
+   "category": "jedzenie",
+   "hint": "Wypiekany z mąki, jemy go na śniadanie."
+  },
+  {
+   "word": "pizza",
+   "difficulty": "EASY",
+   "category": "jedzenie",
+   "hint": "Okrągłe włoskie danie z serem."
+  },
+  {
+   "word": "pierogi",
+   "difficulty": "MEDIUM",
+   "category": "jedzenie",
+   "hint": "Ciasto z nadzieniem, gotowane w wodzie."
+  },
+  {
+   "word": "spaghetti",
+   "difficulty": "MEDIUM",
+   "category": "jedzenie",
+   "hint": "Długi makaron podawany z sosem."
+  },
+  {
+   "word": "sernik",
+   "difficulty": "MEDIUM",
+   "category": "jedzenie",
+   "hint": "Ciasto z twarogiem."
+  },
+  {
+   "word": "fondue",
+   "difficulty": "HARD",
+   "category": "jedzenie",
+   "hint": "Szwajcarskie danie z roztopionego sera, w którym maczamy pieczywo."
+  },
+  {
+   "word": "paella",
+   "difficulty": "HARD",
+   "category": "jedzenie",
+   "hint": "Hiszpańskie danie z ryżu, owoców morza i szafranu."
+  },
+  {
+   "word": "karmelizacja",
+   "difficulty": "HARD",
+   "category": "jedzenie",
+   "hint": "Proces brązowienia cukru pod wpływem ciepła."
+  },
+  {
+   "word": "lekarz",
+   "difficulty": "EASY",
+   "category": "zawody",
+   "hint": "Leczy chorych w szpitalu."
+  },
+  {
+   "word": "kucharz",
+   "difficulty": "EASY",
+   "category": "zawody",
+   "hint": "Przygotowuje posiłki w restauracji."
+  },
+  {
+   "word": "nauczyciel",
+   "difficulty": "EASY",
+   "category": "zawody",
+   "hint": "Uczy dzieci w szkole."
+  },
+  {
+   "word": "hydraulik",
+   "difficulty": "MEDIUM",
+   "category": "zawody",
+   "hint": "Naprawia rury i krany."
+  },
+  {
+   "word": "strażak",
+   "difficulty": "MEDIUM",
+   "category": "zawody",
+   "hint": "Gasi pożary i ratuje ludzi."
+  },
+  {
+   "word": "listonosz",
+   "difficulty": "MEDIUM",
+   "category": "zawody",
+   "hint": "Roznosi listy i paczki."
+  },
+  {
+   "word": "archeolog",
+   "difficulty": "HARD",
+   "category": "zawody",
+   "hint": "Odkopuje ślady dawnych cywilizacji."
+  },
+  {
+   "word": "sommelier",
+   "difficulty": "HARD",
+   "category": "zawody",
+   "hint": "Specjalista od doboru wina do potraw."
+  },
+  {
+   "word": "kartograf",
+   "difficulty": "HARD",
+   "category": "zawody",
+   "hint": "Tworzy mapy."
+  },
+  {
+   "word": "słońce",
+   "difficulty": "EASY",
+   "category": "przyroda",
+   "hint": "Gwiazda, która daje światło i ciepło."
+  },
+  {
+   "word": "deszcz",
+   "difficulty": "EASY",
+   "category": "przyroda",
+   "hint": "Krople spadające z chmur."
+  },
+  {
+   "word": "drzewo",
+   "difficulty": "EASY",
+   "category": "przyroda",
+   "hint": "Ma pień, gałęzie i liście."
+  },
+  {
+   "word": "burza piaskowa",
+   "difficulty": "MEDIUM",
+   "category": "przyroda",
+   "hint": "Zjawisko na pustyni, w którym wiatr unosi tumany piasku."
+  },
+  {
+   "word": "tęcza",
+   "difficulty": "MEDIUM",
+   "category": "przyroda",
+   "hint": "Kolorowy łuk na niebie po deszczu, gdy świeci słońce."
+  },
+  {
+   "word": "wulkan",
+   "difficulty": "MEDIUM",
+   "category": "przyroda",
+   "hint": "Góra, z której wydobywa się lawa."
+  },
+  {
+   "word": "zorza polarna",
+   "difficulty": "HARD",
+   "category": "przyroda",
+   "hint": "Kolorowa łuna na niebie w pobliżu biegunów."
+  },
+  {
+   "word": "zaćmienie",
+   "difficulty": "HARD",
+   "category": "przyroda",
+   "hint": "Jedno ciało niebieskie zasłania światło drugiego."
+  },
+  {
+   "word": "fotosynteza",
+   "difficulty": "HARD",
+   "category": "przyroda",
+   "hint": "Roślina zamienia światło w energię."
+  },
+  {
+   "word": "uśmiech",
+   "difficulty": "EASY",
+   "category": "emocje",
+   "hint": "Wyraz twarzy, gdy się cieszymy."
+  },
+  {
+   "word": "płacz",
+   "difficulty": "EASY",
+   "category": "emocje",
+   "hint": "Łzy spływające po twarzy."
+  },
+  {
+   "word": "złość",
+   "difficulty": "EASY",
+   "category": "emocje",
+   "hint": "Czerwona twarz i zaciśnięte pięści."
+  },
+  {
+   "word": "zazdrość",
+   "difficulty": "MEDIUM",
+   "category": "emocje",
+   "hint": "Uczucie, gdy ktoś ma coś, czego my nie mamy."
+  },
+  {
+   "word": "zaskoczenie",
+   "difficulty": "MEDIUM",
+   "category": "emocje",
+   "hint": "Reakcja na coś nieoczekiwanego."
+  },
+  {
+   "word": "duma",
+   "difficulty": "MEDIUM",
+   "category": "emocje",
+   "hint": "Poczucie satysfakcji z własnych osiągnięć."
+  },
+  {
+   "word": "nostalgia",
+   "difficulty": "HARD",
+   "category": "emocje",
+   "hint": "Tęsknota za minionymi czasami."
+  },
+  {
+   "word": "ambiwalencja",
+   "difficulty": "HARD",
+   "category": "emocje",
+   "hint": "Sprzeczne uczucia wobec tej samej rzeczy."
+  },
+  {
+   "word": "empatia",
+   "difficulty": "HARD",
+   "category": "emocje",
+   "hint": "Zdolność rozumienia uczuć innych ludzi."
+  },
+  {
+   "word": "komputer",
+   "difficulty": "EASY",
+   "category": "nauka",
+   "hint": "Urządzenie z ekranem i klawiaturą."
+  },
+  {
+   "word": "magnes",
+   "difficulty": "EASY",
+   "category": "nauka",
+   "hint": "Przyciąga żelazo."
+  },
+  {
+   "word": "zegar",
+   "difficulty": "EASY",
+   "category": "nauka",
+   "hint": "Pokazuje, która jest godzina."
+  },
+  {
+   "word": "mikroskop",
+   "difficulty": "MEDIUM",
+   "category": "nauka",
+   "hint": "Pozwala zobaczyć bardzo małe rzeczy."
+  },
+  {
+   "word": "satelita",
+   "difficulty": "MEDIUM",
+   "category": "nauka",
+   "hint": "Krąży wokół Ziemi po orbicie."
+  },
+  {
+   "word": "bateria",
+   "difficulty": "MEDIUM",
+   "category": "nauka",
+   "hint": "Magazynuje energię elektryczną."
+  },
+  {
+   "word": "grawitacja",
+   "difficulty": "HARD",
+   "category": "nauka",
+   "hint": "Siła, która przyciąga ciała do Ziemi."
+  },
+  {
+   "word": "teleportacja",
+   "difficulty": "HARD",
+   "category": "nauka",
+   "hint": "Natychmiastowe przeniesienie z miejsca na miejsce, znane z fantastyki."
+  },
+  {
+   "word": "czarna dziura",
+   "difficulty": "HARD",
+   "category": "nauka",
+   "hint": "Obszar kosmosu, z którego nie ucieka nawet światło."
+  },
+  {
+   "word": "zamek",
+   "difficulty": "EASY",
+   "category": "historia",
+   "hint": "Warowna budowla, w której mieszkał król."
+  },
+  {
+   "word": "rycerz",
+   "difficulty": "EASY",
+   "category": "historia",
+   "hint": "Średniowieczny wojownik w zbroi."
+  },
+  {
+   "word": "piramida",
+   "difficulty": "EASY",
+   "category": "historia",
+   "hint": "Grobowiec faraonów."
+  },
+  {
+   "word": "gladiator",
+   "difficulty": "MEDIUM",
+   "category": "historia",
+   "hint": "Walczył na arenie w starożytnym Rzymie."
+  },
+  {
+   "word": "wiking",
+   "difficulty": "MEDIUM",
+   "category": "historia",
+   "hint": "Żeglarz z północy na długim drewnianym okręcie."
+  },
+  {
+   "word": "koloseum",
+   "difficulty": "MEDIUM",
+   "category": "historia",
+   "hint": "Wielki amfiteatr w Rzymie."
+  },
+  {
+   "word": "rewolucja",
+   "difficulty": "HARD",
+   "category": "historia",
+   "hint": "Gwałtowna zmiana ustroju lub władzy."
+  },
+  {
+   "word": "renesans",
+   "difficulty": "HARD",
+   "category": "historia",
+   "hint": "Epoka odrodzenia sztuki i nauki."
+  },
+  {
+   "word": "imperium",
+   "difficulty": "HARD",
+   "category": "historia",
+   "hint": "Państwo rządzące wieloma narodami."
+  },
+  {
+   "word": "piłka",
+   "difficulty": "EASY",
+   "category": "sport",
+   "hint": "Gramy nią nogą lub ręką."
+  },
+  {
+   "word": "rower",
+   "difficulty": "EASY",
+   "category": "sport",
+   "hint": "Ma dwa koła i pedały."
+  },
+  {
+   "word": "basen",
+   "difficulty": "EASY",
+   "category": "sport",
+   "hint": "Miejsce do pływania."
+  },
+  {
+   "word": "nurkowanie",
+   "difficulty": "MEDIUM",
+   "category": "sport",
+   "hint": "Zanurzanie się pod wodę z butlą na plecach."
+  },
+  {
+   "word": "łyżwiarstwo",
+   "difficulty": "MEDIUM",
+   "category": "sport",
+   "hint": "Ślizganie się po lodzie na płozach."
+  },
+  {
+   "word": "wspinaczka",
+   "difficulty": "MEDIUM",
+   "category": "sport",
+   "hint": "Zdobywanie ściany lub góry."
+  },
+  {
+   "word": "slalom",
+   "difficulty": "HARD",
+   "category": "sport",
+   "hint": "Zjazd zygzakiem między tyczkami."
+  },
+  {
+   "word": "maraton",
+   "difficulty": "HARD",
+   "category": "sport",
+   "hint": "Bieg na dystansie ponad czterdziestu kilometrów."
+  },
+  {
+   "word": "szermierka",
+   "difficulty": "HARD",
+   "category": "sport",
+   "hint": "Walka na floret lub szpadę."
+  }
+ ]
+}
+

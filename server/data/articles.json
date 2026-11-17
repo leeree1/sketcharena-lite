@@ -1,0 +1,63 @@
+[
+ {
+  "slug": "zasady-gry",
+  "title": "Zasady gry SketchArena",
+  "type": "RULES",
+  "content": "SketchArena to gra „rysuj i zgaduj” w przeglądarce. Gracze spotykają się w pokoju, a w każdej turze jedna osoba rysuje hasło, a pozostali próbują je odgadnąć, pisząc odpowiedzi na czacie.\n\n## Przebieg meczu\n- Gospodarz zakłada pokój i ustawia poziom trudności, kategorię haseł, limit graczy, czas tury i liczbę rund.\n- Mecz można rozpocząć, gdy w pokoju są co najmniej dwie osoby.\n- W każdej rundzie każdy gracz rysuje dokładnie raz, w kolejności dołączenia do pokoju.\n- Rysujący wybiera jedno z trzech haseł (ma na to 15 sekund; potem hasło wybiera system).\n- Zgadujący widzą maskę hasła, czyli podkreślenia w miejscu liter. W trakcie tury odsłaniane są kolejne litery.\n- Tura kończy się, gdy wszyscy odgadną hasło albo skończy się czas.\n- Po ostatniej turze pojawia się podium, a gracze z kontem dostają zmianę rankingu ELO.\n\n## Zasady odpowiedzi\n- Wielkość liter i polskie znaki nie mają znaczenia: „krzeslo” i „Krzesło” to ta sama odpowiedź.\n- Jeśli odpowiedź różni się od hasła jedną literą, dostaniesz prywatną wskazówkę „Blisko!”.\n- Kto już odgadł hasło, pisze na czacie tylko do rysującego i innych, którzy odgadli, żeby nie zdradzać odpowiedzi.\n- Rysujący nie może pisać hasła ani podpowiadać literami czy cyframi."
+ },
+ {
+  "slug": "punktacja",
+  "title": "Punktacja i mnożniki trudności",
+  "type": "RULES",
+  "content": "Za trafną odpowiedź dostajesz punkty. Im szybciej odgadniesz i im trudniejsze hasło, tym więcej punktów.\n\n## Wzór\nPunkty zgadującego = 100 × mnożnik trudności × (0,4 + 0,6 × pozostały czas / czas tury), zaokrąglone do liczby całkowitej.\n\n## Mnożniki trudności\n- Poziom łatwy: × 1,0\n- Poziom średni: × 1,5\n- Poziom trudny: × 2,5\n\nAdministrator może zmienić mnożniki w panelu.\n\n## Punkty rysującego\nRysujący dostaje połowę punktów za każdą osobę, która odgadła jego hasło. Opłaca się więc rysować czytelnie.\n\n## Przykład\nHasło trudne, tura trwa 80 sekund, odgadujesz po 16 sekundach (zostało 64 sekundy): 100 × 2,5 × (0,4 + 0,6 × 0,8) = 220 punktów. Rysujący dostaje za to 110 punktów. To samo odgadnięcie na poziomie łatwym dałoby 88 punktów."
+ },
+ {
+  "slug": "poziomy-trudnosci",
+  "title": "Poziomy trudności",
+  "type": "RULES",
+  "content": "Hasła w SketchArena są podzielone na trzy poziomy trudności. Gospodarz wybiera poziom dla całego pokoju, a chatbot potrafi dobrać pokój o właściwym poziomie.\n\n## Poziom łatwy (mnożnik × 1,0)\nProste rzeczowniki i przedmioty codziennego użytku, np. krzesło, jabłko, słońce. Dobry na początek i do gry z dziećmi.\n\n## Poziom średni (mnożnik × 1,5)\nCzynności, zjawiska pogodowe i zawody, np. nurkowanie, burza piaskowa, hydraulik. Wymaga trochę pomysłowości w rysowaniu.\n\n## Poziom trudny (mnożnik × 2,5)\nAbstrakcje, emocje i skomplikowane zjawiska, np. nostalgia, grawitacja, teleportacja. W rundach trudnych w połowie czasu pojawia się dodatkowa podpowiedź opisowa dla zgadujących.\n\n## Dobór poziomu\nJeśli nie powiesz chatbotowi, jaki poziom wolisz, dobierze go na podstawie Twojego rankingu ELO: poniżej 1050 poziom łatwy, od 1050 do 1149 średni, od 1150 trudny."
+ },
+ {
+  "slug": "ranking-elo",
+  "title": "Ranking ELO — co to jest?",
+  "type": "GLOSSARY",
+  "content": "ELO to system oceny siły graczy znany z szachów. Każdy zarejestrowany gracz zaczyna z wynikiem 1000 punktów.\n\n## Jak się zmienia\nPo każdym meczu system porównuje Twój wynik z każdym z pozostałych zarejestrowanych graczy w pokoju. Wygrana z lepszym graczem daje więcej punktów rankingu niż wygrana ze słabszym; przegrana ze słabszym zabiera więcej niż przegrana z mocniejszym. Współczynnik K wynosi 32 i jest dzielony przez liczbę przeciwników.\n\n## Ważne\n- Goście nie mają rankingu ELO, a ich wyniki nie zmieniają rankingu innych.\n- Aby ranking miał sens, w meczu muszą grać co najmniej dwa konta zarejestrowane.\n- Ranking ELO jest niezależny od punktów zdobywanych w meczu; punkty meczu decydują tylko o miejscu na podium."
+ },
+ {
+  "slug": "jak-rysowac-myszka",
+  "title": "Jak rysować myszką",
+  "type": "DRAWING_TIPS",
+  "content": "Rysowanie myszką jest mniej płynne niż piórkiem, ale kilka nawyków bardzo pomaga.\n\n- Używaj grubszej kreski do konturów i cieńszej do szczegółów.\n- Rysuj prostymi, krótkimi pociągnięciami zamiast długich krzywych.\n- Zacznij od najbardziej charakterystycznego elementu, np. uszu zwierzęcia czy dachu domu.\n- Jeśli się pomylisz, użyj przycisku „Cofnij” zamiast zamalowywać błąd.\n- Kolor stosuj tylko wtedy, gdy pomaga w zgadywaniu, np. żółte słońce albo zielona trawa."
+ },
+ {
+  "slug": "jak-rysowac-tablet",
+  "title": "Rysowanie na tablecie i ekranie dotykowym",
+  "type": "DRAWING_TIPS",
+  "content": "SketchArena działa na telefonach i tabletach. Płótno reaguje na dotyk i rysik tak samo jak na mysz.\n\n- Obróć telefon poziomo, żeby mieć większe płótno.\n- Rysuj opuszkiem palca lub rysikiem; unikaj opierania dłoni na ekranie.\n- Przy małym ekranie wybieraj grubszą kreskę, bo cienkie linie trudno zobaczyć.\n- Przybliżenie strony przeglądarki może zakłócić rysowanie, więc zostaw domyślne powiększenie.\n- Jeśli strona przewija się podczas rysowania, rysuj wewnątrz białego płótna."
+ },
+ {
+  "slug": "strategie-rysowania",
+  "title": "Strategie rysowania trudnych haseł",
+  "type": "DRAWING_TIPS",
+  "content": "Hasła abstrakcyjne, takie jak nostalgia czy empatia, trudno narysować wprost. Pomagają sprawdzone sztuczki.\n\n- Rysuj scenkę z postaciami zamiast pojedynczego przedmiotu, np. dla empatii dwie osoby, z których jedna pociesza drugą.\n- Używaj symboli: żarówka to pomysł, serce to uczucie, zegar to czas.\n- Podziel hasło na części. Dla „teleportacji” możesz narysować osobę w dwóch miejscach i strzałkę między nimi.\n- Korzystaj z podpowiedzi opisowej: w rundach trudnych zgadujący dostają ją w połowie czasu, więc rysunek nie musi być doskonały od razu.\n- Nie trać czasu na szczegóły. Lepszy czytelny szkic po 20 sekundach niż piękny rysunek po 70."
+ },
+ {
+  "slug": "faq-polaczenie",
+  "title": "FAQ: zerwane połączenie i powrót do gry",
+  "type": "FAQ",
+  "content": "## Co się stanie, gdy stracę połączenie z internetem?\nPrzeglądarka spróbuje połączyć się ponownie automatycznie. Jeśli wrócisz do pokoju (przez kod lub z listy), zachowasz swój wynik i zobaczysz dotychczasowy rysunek.\n\n## Jak długo pokój na mnie czeka?\nW lobby rozłączony gracz jest usuwany po 30 sekundach. W trakcie meczu gracz pozostaje w pokoju do końca meczu, ale jego tury są pomijane, dopóki nie wróci.\n\n## Co, jeśli rozłączy się rysujący?\nTura kończy się bez punktów i zaczyna się kolejna.\n\n## Co, jeśli zostanie mniej niż dwóch graczy?\nMecz kończy się wcześniej bez zmian rankingu ELO.\n\n## Czy mogę grać bez konta?\nTak. Wystarczy pseudonim. Goście nie mają jednak rankingu ELO i nie mogą proponować nowych haseł."
+ },
+ {
+  "slug": "regulamin",
+  "title": "Regulamin i zgłaszanie naruszeń",
+  "type": "RULES",
+  "content": "Dbamy o przyjazną atmosferę. Obowiązują proste zasady.\n\n## Zasady\n- Nie rysuj treści obraźliwych, wulgarnych ani dyskryminujących.\n- Nie pisz na czacie wiadomości obraźliwych ani spamu.\n- Nie podpowiadaj hasła poza zasadami gry i nie udostępniaj hasła innym osobom.\n- Nie podszywaj się pod innych graczy ani pod moderatorów.\n\n## Jak zgłosić naruszenie\nPrzy nazwie gracza na liście w pokoju kliknij ikonę flagi, wybierz powód i wyślij zgłoszenie. Zgłoszenie trafia do moderatorów.\n\n## Co robi moderator\nModerator rozpatruje zgłoszenie i może je odrzucić albo uznać. Przy poważnych naruszeniach nakłada blokadę czasową na konto. Zablokowany użytkownik nie może się logować ani dołączać do pokoi do czasu wygaśnięcia blokady.\n\n## Propozycje haseł\nGracze z kontem mogą proponować nowe hasła. Moderator zatwierdza propozycję, jeśli hasło jest odpowiednie, nie powtarza się w słowniku i ma poprawną podpowiedź."
+ },
+ {
+  "slug": "slownik-pojec",
+  "title": "Słownik pojęć",
+  "type": "GLOSSARY",
+  "content": "- Rysujący: gracz, który w danej turze rysuje hasło.\n- Zgadujący: pozostali gracze, którzy próbują odgadnąć hasło.\n- Hasło: słowo lub wyrażenie do narysowania, wybierane z jednego z trzech poziomów trudności.\n- Maska hasła: podkreślenia w miejscu liter, które pokazują zgadującym długość hasła. W trakcie tury odsłaniane są kolejne litery.\n- Podpowiedź opisowa: krótki opis hasła z bazy wiedzy, pokazywany zgadującym w połowie czasu w rundach trudnych.\n- Tura: pojedyncze rysowanie jednego hasła przez jednego gracza.\n- Runda: seria tur, w której każdy gracz rysuje raz.\n- Gospodarz: gracz, który założył pokój i może zmieniać jego ustawienia, wyrzucać graczy oraz rozpoczynać mecz.\n- Lobby: poczekalnia, w której gracze czekają na start meczu, a także ekran z listą pokoi i czatem z botem.\n- Mnożnik trudności: współczynnik, przez który mnoży się punkty za odgadnięcie hasła.\n- ELO: ranking siły gracza, aktualizowany po każdym meczu."
+ }
+]
+
