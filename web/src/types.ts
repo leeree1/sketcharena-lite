@@ -12,7 +12,7 @@ export interface RoomState { code: string; status: 'LOBBY' | 'IN_GAME'; hostId: 
 export interface Stroke { id: string; color: string; width: number; points: [number, number][] }
 export interface ChatMsg { id: string; userId?: string; username?: string; text: string; kind: 'guess' | 'correct' | 'close' | 'secret' | 'system' | 'chat' }
 export interface TurnEnd { word: string | null; scores: { userId: string; delta: number; total: number }[]; reason: string }
-export interface RankRow { userId: string; username: string; score: number; rank: number }
+export interface RankRow { userId: string; username: string; score: number; rank: number; elo?: { before: number; after: number } }
 export interface GameEnd { aborted: boolean; ranking: RankRow[] }
 
 export interface Article { id: string; slug: string; title: string; type: 'RULES' | 'DRAWING_TIPS' | 'FAQ' | 'GLOSSARY'; content?: string; excerpt?: string }

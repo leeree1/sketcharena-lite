@@ -22,8 +22,8 @@ async function main() {
     emitter, pickWords: async () => words, onChange: () => {},
     onFinish: async (_r, ranking) => { console.log('\nRANKING:', ranking.map((r) => `${r.rank}. ${r.username} ${r.score} pkt`).join(' | ')); },
   });
-  room.addPlayer({ id: 'u1', username: 'Ola' });
-  room.addPlayer({ id: 'u2', username: 'Ala' });
+  room.addPlayer({ id: 'u1', username: 'Ola', role: 'GUEST' });
+  room.addPlayer({ id: 'u2', username: 'Ala', role: 'GUEST' });
 
   await room.engine.start('u1');
   for (const drawerId of ['u1', 'u2']) {

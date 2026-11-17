@@ -224,6 +224,7 @@ function GameEndModal({ end, meId, onClose, onLeave }: { end: GameEnd; meId: str
           return (
             <li key={r.userId} className={`flex items-center gap-3 rounded-xl px-3 py-2 ${r.rank === 1 && !end.aborted ? 'bg-amber-50 ring-1 ring-amber-200' : 'bg-slate-50'} ${r.userId === meId ? 'font-bold' : ''}`}>
               <span className="w-8 text-center text-xl">{medal(r.rank)}</span><span className="flex-1 truncate">{r.username}</span>
+              {r.elo && <span className={`text-sm font-mono ${r.elo.after >= r.elo.before ? 'text-emerald-600' : 'text-rose-600'}`}>ELO {r.elo.after} ({r.elo.after >= r.elo.before ? '+' : ''}{r.elo.after - r.elo.before})</span>}
               <span className="font-mono">{r.score} pkt</span>
             </li>
           );

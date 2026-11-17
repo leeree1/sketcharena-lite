@@ -8,13 +8,13 @@ import type { Room } from './room';
 /** Błąd, który pokazujemy graczowi (np. „Tylko gospodarz może rozpocząć grę”) */
 export class GameError extends Error {}
 
-export interface RankRow { userId: string; username: string; score: number; rank: number }
+export interface RankRow { userId: string; username: string; score: number; rank: number; elo?: { before: number; after: number } }
 
 export interface EngineDeps {
   emitter: Emitter;
   pickWords: (difficulty: Difficulty, categorySlug: string | null, n: number, excludeIds: string[]) => Promise<Word[]>;
   onChange: () => void;                                        // wywoływane po każdej zmianie stanu pokoju
-  onFinish: (room: Room, ranking: RankRow[]) => Promise<void>; // zapis wyniku meczu
+  onFinish: (room: Room, ranking: RankRow[]) => Promise<void | Record<string, { before: number; after: number }>>; // zapis wyniku meczu
 }
 
 type Phase = 'IDLE' | 'CHOOSING' | 'DRAWING' | 'TURN_END';
@@ -265,9 +265,12 @@ export class GameEngine {
 
   private async finish() {
     if (!this.active) return;
-    const ranking = this.ranking();
+    let ranking = this.ranking();
     this.clearTimers();
-    try { await this.d.onFinish(this.room, ranking); } catch (e) { console.error('Nie udało się zapisać wyniku meczu:', e); }
+    try {
+      const elo = await this.d.onFinish(this.room, ranking);
+      if (elo) ranking = ranking.map((r) => ({ ...r, elo: elo[r.userId] }));   // dołącza zmianę ELO do wiersza rankingu
+    } catch (e) { console.error('Nie udało się zapisać wyniku meczu:', e); }
     this.resetToLobby();
     this.d.emitter.toRoom(this.room.code, 'game:end', { aborted: false, ranking });
     this.broadcast();

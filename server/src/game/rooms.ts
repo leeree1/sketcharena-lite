@@ -42,7 +42,7 @@ export class RoomManager {
           emitter: this.emitter,
           pickWords,
           onChange: () => undefined,
-          onFinish: saveResults,                        // zapis wyniku w bazie dodamy w etapie 8
+          onFinish: saveResults,                        // zapis wyniku meczu i ELO w bazie
         });
         this.rooms.set(code, room);
         this.hostNames.set(code, host.username);
