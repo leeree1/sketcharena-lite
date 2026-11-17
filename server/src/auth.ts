@@ -5,6 +5,7 @@ import { config } from './config';
 import { query, queryOne } from './db';
 import { HttpError, wrap } from './errors';
 import { activeBan } from './bans';
+import { authTotal } from './metrics';
 
 
 export type Role = 'GUEST' | 'PLAYER' | 'MODERATOR' | 'ADMIN';
@@ -47,6 +48,7 @@ authRouter.post('/guest', wrap(async (req, res) => {
   for (let i = 0; i < 6; i++) {
     try {
       const [u] = await query(`INSERT INTO users (username, role) VALUES ($1, 'GUEST') RETURNING id, username, role`, [name]);
+      authTotal.inc({ action: 'guest', result: 'success' });
       return res.status(201).json({ token: signToken(u), user: u });
     } catch (e: any) {
       if (e.code !== '23505') throw e;                    // 23505 = pseudonim już istnieje
@@ -70,9 +72,10 @@ authRouter.post('/register', wrap(async (req, res) => {
     const [u] = await query(
       `INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, 'PLAYER') RETURNING id, username, role`,
       [username, email, hash]);
+    authTotal.inc({ action: 'register', result: 'success' });
     return res.status(201).json({ token: signToken(u), user: u });
   } catch (e: any) {
-    if (e.code === '23505') throw new HttpError(409, 'Pseudonim lub e-mail jest już zajęty.');
+    if (e.code === '23505') { authTotal.inc({ action: 'register', result: 'failure' }); throw new HttpError(409, 'Pseudonim lub e-mail jest już zajęty.'); }
     throw e;
   }
 }));
@@ -84,10 +87,13 @@ authRouter.post('/login', wrap(async (req, res) => {
   const row = await queryOne<{ id: string; username: string; role: Role; password_hash: string | null }>(
     'SELECT id, username, role, password_hash FROM users WHERE email = $1', [email]);
   const ok = row?.password_hash ? await bcrypt.compare(password, row.password_hash) : false;
+  if (!row || !ok) authTotal.inc({ action: 'login', result: 'failure' });
   if (!row || !ok) throw new HttpError(401, 'Nieprawidłowy e-mail lub hasło.');   // ten sam komunikat dla obu błędów
   const ban = await activeBan(row.id);                  // zablokowane konto nie może się zalogować
+  if (ban) authTotal.inc({ action: 'login', result: 'banned' });
   if (ban) throw new HttpError(403, `Konto jest zablokowane do ${new Date(ban.expires_at).toLocaleString('pl-PL')}. Powód: ${ban.reason}`);
   const user: AuthUser = { id: row.id, username: row.username, role: row.role };
+  authTotal.inc({ action: 'login', result: 'success' });
   res.json({ token: signToken(user), user });
 }));
 

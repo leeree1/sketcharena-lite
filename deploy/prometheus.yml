@@ -1,0 +1,9 @@
+# Prometheus: co 5 sekund pobiera metryki z naszego serwera (GET /metrics) i zapisuje je w czasie
+global:
+  scrape_interval: 5s
+scrape_configs:
+  - job_name: sketcharena
+    metrics_path: /metrics
+    static_configs:
+      # host.docker.internal = komputer, na którym działa Docker (tu uruchamiasz serwer przez npm run dev)
+      - targets: ['host.docker.internal:3000']

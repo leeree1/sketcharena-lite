@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io';
 import { randomUUID } from 'crypto';
 import { AuthUser, verifyToken } from './auth';
 import { activeBan } from './bans';
+import { socketErrorsTotal, socketEventsTotal } from './metrics';
 import { config } from './config';
 import { GameError } from './game/engine';
 import { RoomManager, parseScoreLimit } from './game/rooms';
@@ -76,8 +77,10 @@ export function attachSocket(io: Server, rooms: RoomManager) {
     // Opakowanie obsługi zdarzenia: błędy trafiają do gracza jako komunikat
     const on = (event: string, fn: (data: any, ack?: (r: unknown) => void) => Promise<void> | void) => {
       socket.on(event, async (data: any, ack?: (r: unknown) => void) => {
+        socketEventsTotal.inc({ event });                          // każde odebrane zdarzenie zwiększa licznik
         try { await fn(data ?? {}, typeof ack === 'function' ? ack : undefined); }
         catch (e) {
+          socketErrorsTotal.inc({ event });
           const message = e instanceof GameError ? e.message : 'Wystąpił błąd serwera.';
           if (!(e instanceof GameError)) console.error(`Błąd w zdarzeniu ${event}:`, e);
           if (typeof ack === 'function') ack({ ok: false, error: message }); else socket.emit('error:message', { message });

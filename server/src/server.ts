@@ -12,8 +12,10 @@ import { refreshMultipliers } from './game/multipliers';
 import { HttpError } from './errors';
 import { RoomManager, roomsRouter } from './game/rooms';
 import { attachSocket, makeEmitter } from './realtime';
+import { httpMetrics, metricsHandler, registerMetricSources } from './metrics';
 
 const app = express();
+app.use(httpMetrics);                       // mierzy czas każdego żądania (pierwszy middleware)
 app.use(express.json());
 app.use(authenticate);
 
@@ -21,6 +23,9 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 const rooms = new RoomManager(makeEmitter(io));
 attachSocket(io, rooms);
+registerMetricSources({ rooms: () => rooms.stats(), sockets: () => io.engine.clientsCount });   // skąd wskaźniki biorą liczby
+
+app.get('/metrics', metricsHandler);     // endpoint dla Prometheusa (na serwerze zablokujemy go z zewnątrz w Nginx)
 
 app.get('/health', async (_req, res) => {
   try {

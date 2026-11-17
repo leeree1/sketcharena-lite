@@ -3,6 +3,7 @@ import { query, queryOne } from './db';
 import { HttpError, wrap } from './errors';
 import { requireAuth, requireRole } from './auth';
 import { parseWordInput } from './validate';
+import { moderationActionsTotal } from './metrics';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const staff = requireRole('MODERATOR', 'ADMIN');          // tylko moderator i administrator
@@ -21,6 +22,7 @@ moderationRouter.post('/reports', requireAuth, wrap(async (req, res) => {
   if (!(await queryOne('SELECT 1 FROM users WHERE id = $1', [reportedUserId]))) throw new HttpError(404, 'Nie znaleziono gracza.');
   await query('INSERT INTO moderation_reports (reporter_id, reported_user_id, reason) VALUES ($1, $2, $3)',
     [req.user!.id, reportedUserId, reason]);
+  moderationActionsTotal.inc({ action: 'report' });
   res.status(201).json({ ok: true });
 }));
 
@@ -56,6 +58,7 @@ moderationRouter.post('/reports/:id/resolve', requireAuth, staff, wrap(async (re
     await query(
       `INSERT INTO user_bans (user_id, banned_by, reason, expires_at) VALUES ($1, $2, $3, now() + make_interval(hours => $4::int))`,
       [report.reported_user_id, req.user!.id, note || 'Naruszenie regulaminu', hours]);
+    moderationActionsTotal.inc({ action: 'ban' });
   }
   await query(
     `UPDATE moderation_reports SET status = $1, handled_by = $2, resolution_note = $3, handled_at = now() WHERE id = $4`,
@@ -98,6 +101,7 @@ moderationRouter.post('/proposals', requireAuth, wrap(async (req, res) => {
     if (e.code === '23503') throw new HttpError(400, 'Nie ma takiej kategorii.');
     throw e;
   }
+  moderationActionsTotal.inc({ action: 'proposal' });
   res.status(201).json({ ok: true });
 }));
 

@@ -4,6 +4,7 @@ import { Difficulty, Emitter, Word } from '../types';
 import { checkGuess } from './guess';
 import { drawerPoints, guessPoints, MULTIPLIER } from './scoring';
 import type { Room } from './room';
+import { gamesAbortedTotal, gamesFinishedTotal, gamesStartedTotal } from '../metrics';
 
 /** Błąd, który pokazujemy graczowi (np. „Tylko gospodarz może rozpocząć grę”) */
 export class GameError extends Error {}
@@ -78,6 +79,7 @@ export class GameEngine {
     this.phase = 'CHOOSING';
     this.room.status = 'IN_GAME';
     this.round = 1;
+    gamesStartedTotal.inc();
     this.used = [];
     this.queue = this.room.connectedPlayers().map((p) => p.userId);
     this.d.emitter.toRoom(this.room.code, 'chat:message', { id: randomUUID(), kind: 'system', text: 'Gra się rozpoczęła! Powodzenia!' });
@@ -273,6 +275,7 @@ export class GameEngine {
       const elo = await this.d.onFinish(this.room, ranking);
       if (elo) ranking = ranking.map((r) => ({ ...r, elo: elo[r.userId] }));   // dołącza zmianę ELO do wiersza rankingu
     } catch (e) { console.error('Nie udało się zapisać wyniku meczu:', e); }
+    gamesFinishedTotal.inc();
     this.resetToLobby();
     this.d.emitter.toRoom(this.room.code, 'game:end', { aborted: false, ranking });
     this.broadcast();
@@ -281,6 +284,7 @@ export class GameEngine {
   private abort() {
     if (!this.active) return;
     const ranking = this.ranking();
+    gamesAbortedTotal.inc();
     this.resetToLobby();
     this.d.emitter.toRoom(this.room.code, 'game:end', { aborted: true, ranking });
     this.d.emitter.toRoom(this.room.code, 'chat:message', { id: randomUUID(), kind: 'system', text: 'Za mało graczy lub brak haseł — mecz został przerwany.' });

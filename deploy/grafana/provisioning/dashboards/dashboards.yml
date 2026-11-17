@@ -1,0 +1,7 @@
+# Mówi Grafanie, żeby wczytała dashboardy (pliki .json) z folderu /var/lib/grafana/dashboards
+apiVersion: 1
+providers:
+  - name: SketchArena
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

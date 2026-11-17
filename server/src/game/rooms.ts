@@ -54,6 +54,12 @@ export class RoomManager {
     throw new HttpError(500, 'Nie udało się wygenerować kodu pokoju.');
   }
 
+  /** Liczby do monitoringu: ile jest pokoi i ile z nich gra */
+  stats() {
+    const all = [...this.rooms.values()];
+    return { rooms: all.length, inGame: all.filter((r) => r.status === 'IN_GAME').length };
+  }
+
   summary(room: Room): RoomSummary {
     return {
       code: room.code, hostName: room.players.get(room.hostId)?.username ?? this.hostNames.get(room.code) ?? '',
