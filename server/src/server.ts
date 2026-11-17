@@ -7,6 +7,8 @@ import { authenticate, authRouter } from './auth';
 import { kbRouter } from './knowledge';
 import { chatbotRouter } from './chatbot';
 import { moderationRouter } from './moderation';
+import { adminRouter } from './admin';
+import { refreshMultipliers } from './game/multipliers';
 import { HttpError } from './errors';
 import { RoomManager, roomsRouter } from './game/rooms';
 import { attachSocket, makeEmitter } from './realtime';
@@ -34,6 +36,7 @@ app.use('/api/kb', kbRouter);
 app.use('/api/rooms', roomsRouter(rooms));
 app.use('/api/chatbot', chatbotRouter(rooms));
 app.use('/api/moderation', moderationRouter);
+app.use('/api/admin', adminRouter);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof HttpError) return res.status(err.status).json({ error: { message: err.message } });
@@ -41,4 +44,5 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ error: { message: 'Wystąpił błąd serwera.' } });
 });
 
+refreshMultipliers().catch((e) => console.error('Nie udało się wczytać mnożników punktów:', e));   // wartości z bazy zamiast domyślnych
 httpServer.listen(config.port, () => console.log(`Serwer działa: http://localhost:${config.port}`));

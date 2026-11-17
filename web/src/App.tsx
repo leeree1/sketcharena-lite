@@ -6,6 +6,8 @@ import Auth from './components/Auth';
 import Knowledge from './components/Knowledge';
 import Lobby from './components/Lobby';
 import Moderation from './components/Moderation';
+import Admin from './components/Admin';
+import ProposeWord from './components/ProposeWord';
 import Room from './components/Room';
 
 export type ToastTone = 'info' | 'error' | 'success';
@@ -16,7 +18,7 @@ interface Ctx { user: User; socket: Socket | null; toast: (text: string, tone?: 
 const AppCtx = createContext<Ctx>(null as unknown as Ctx);
 export const useApp = () => useContext(AppCtx);
 
-type View = 'lobby' | 'kb' | 'mod';
+type View = 'lobby' | 'kb' | 'mod' | 'admin';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -26,6 +28,7 @@ export default function App() {
   const [roomCode, setRoomCode] = useState<string | null>(null);
   const [articleSlug, setArticleSlug] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const [proposing, setProposing] = useState(false);
   const nextId = useRef(0);
 
   const toast = useCallback((text: string, tone: ToastTone = 'info') => {
@@ -70,11 +73,12 @@ export default function App() {
   if (!user || !ctx) return <>{toastView}<Auth onAuth={(u, token) => { setToken(token); setUser(u); }} toast={toast} /></>;
 
   const isStaff = user.role === 'MODERATOR' || user.role === 'ADMIN';
-  const tabs: { id: View; label: string }[] = [{ id: 'lobby', label: 'Lobby' }, { id: 'kb', label: 'Baza wiedzy' }, ...(isStaff ? [{ id: 'mod' as View, label: 'Moderacja' }] : [])];
+  const tabs: { id: View; label: string }[] = [{ id: 'lobby', label: 'Lobby' }, { id: 'kb', label: 'Baza wiedzy' }, ...(isStaff ? [{ id: 'mod' as View, label: 'Moderacja' }] : []), ...(user.role === 'ADMIN' ? [{ id: 'admin' as View, label: 'Administracja' }] : [])];
 
   return (
     <AppCtx.Provider value={ctx}>
       {toastView}
+      {proposing && <ProposeWord onClose={() => setProposing(false)} />}
       <div className="flex min-h-full flex-col">
         <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5">
@@ -87,7 +91,10 @@ export default function App() {
                 ))}
               </nav>
             )}
-            <span className="ml-auto max-w-32 truncate text-sm font-semibold text-slate-700">{user.username}</span>
+            <div className="ml-auto flex items-center gap-3">
+              {user.role !== 'GUEST' && <button onClick={() => setProposing(true)} className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100">💡 Zaproponuj hasło</button>}
+              <span className="max-w-32 truncate text-sm font-semibold text-slate-700">{user.username}</span>
+            </div>
             <button onClick={logout} className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100">Wyloguj</button>
           </div>
         </header>
@@ -97,6 +104,7 @@ export default function App() {
           {roomCode && <Room key={roomCode} code={roomCode} onLeave={() => setRoomCode(null)} />}
           {!roomCode && view === 'kb' && <Knowledge initialSlug={articleSlug} />}
           {!roomCode && view === 'mod' && isStaff && <Moderation />}
+          {!roomCode && view === 'admin' && user.role === 'ADMIN' && <Admin />}
         </main>
       </div>
     </AppCtx.Provider>

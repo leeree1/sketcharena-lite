@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api, ApiError } from '../api';
 import { useApp } from '../App';
-import { Ban, Report } from '../types';
-import { Badge, Button, Card, Empty, inputCls, Label, Spinner } from './ui';
+import { Ban, Proposal, Report } from '../types';
+import { Badge, Button, Card, DifficultyBadge, Empty, inputCls, Label, Spinner } from './ui';
 
 type Filter = 'PENDING' | 'RESOLVED' | 'DISMISSED';
 const FILTERS: { id: Filter; label: string }[] = [{ id: 'PENDING', label: 'Oczekujące' }, { id: 'RESOLVED', label: 'Z blokadą' }, { id: 'DISMISSED', label: 'Oddalone' }];
@@ -41,6 +41,7 @@ export default function Moderation() {
   };
 
   return (
+    <div className="space-y-4">
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
       <Card title="Zgłoszenia graczy" action={
         <div className="flex gap-1">{FILTERS.map((f) => (
@@ -64,6 +65,8 @@ export default function Moderation() {
           </ul>
         )}
       </Card>
+    </div>
+    <Proposals />
     </div>
   );
 }
@@ -92,5 +95,35 @@ function ReportRow({ report, onResolve }: { report: Report; onResolve: (id: stri
         </div>
       ) : report.resolution_note && <p className="mt-2 text-xs text-slate-500">Uzasadnienie: {report.resolution_note}</p>}
     </li>
+  );
+}
+
+/** Propozycje nowych haseł od graczy: zatwierdzenie dodaje hasło do gry */
+function Proposals() {
+  const { toast } = useApp();
+  const [list, setList] = useState<Proposal[] | null>(null);
+  const load = useCallback(() => api<{ proposals: Proposal[] }>('GET', '/moderation/proposals').then((r) => setList(r.proposals))
+    .catch((e) => toast(e instanceof ApiError ? e.message : 'Nie udało się pobrać propozycji.', 'error')), [toast]);
+  useEffect(() => { load(); }, [load]);
+  const review = async (id: string, action: 'APPROVE' | 'REJECT') => {
+    try {
+      await api('POST', `/moderation/proposals/${id}/review`, { action });
+      toast(action === 'APPROVE' ? 'Hasło dodane do gry.' : 'Propozycja odrzucona.', 'success');
+      load();
+    } catch (e) { toast(e instanceof ApiError ? e.message : 'Nie udało się rozpatrzyć propozycji.', 'error'); }
+  };
+  return (
+    <Card title="Propozycje nowych haseł">
+      {list === null ? <Spinner /> : list.length === 0 ? <Empty>Brak propozycji do rozpatrzenia.</Empty> : (
+        <ul className="divide-y divide-slate-100">{list.map((p) => (
+          <li key={p.id} className="flex flex-wrap items-center gap-3 py-2">
+            <div className="min-w-0 flex-1"><div className="text-sm font-semibold">{p.word}</div><div className="truncate text-xs text-slate-500">{p.category_name ?? 'bez kategorii'} · {p.hint} · od {p.proposer_name}</div></div>
+            <DifficultyBadge d={p.difficulty} />
+            <Button size="sm" variant="success" onClick={() => review(p.id, 'APPROVE')}>Zatwierdź</Button>
+            <Button size="sm" variant="secondary" onClick={() => review(p.id, 'REJECT')}>Odrzuć</Button>
+          </li>))}
+        </ul>
+      )}
+    </Card>
   );
 }
