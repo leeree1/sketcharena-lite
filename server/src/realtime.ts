@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import { randomUUID } from 'crypto';
 import { AuthUser, verifyToken } from './auth';
+import { activeBan } from './bans';
 import { config } from './config';
 import { GameError } from './game/engine';
 import { RoomManager } from './game/rooms';
@@ -19,9 +20,10 @@ export function makeEmitter(io: Server): Emitter {
 /** Gateway WebSocket: uwierzytelnia połączenia i przekazuje zdarzenia graczy do pokoju i silnika gry */
 export function attachSocket(io: Server, rooms: RoomManager) {
   // Każde połączenie musi mieć poprawny token JWT (klient wysyła go w handshake)
-  io.use((socket, next) => {
+  io.use(async (socket, next) => {
     const user = verifyToken(String(socket.handshake.auth?.token ?? ''));
     if (!user) return next(new Error('UNAUTHORIZED'));
+    if (await activeBan(user.id)) return next(new Error('BANNED'));   // zablokowany gracz nie połączy się z grą
     socket.data.user = user;
     next();
   });

@@ -16,6 +16,8 @@ export interface RankRow { userId: string; username: string; score: number; rank
 export interface GameEnd { aborted: boolean; ranking: RankRow[] }
 
 export interface Article { id: string; slug: string; title: string; type: 'RULES' | 'DRAWING_TIPS' | 'FAQ' | 'GLOSSARY'; content?: string; excerpt?: string }
+export interface Report { id: string; reason: string; status: 'PENDING' | 'RESOLVED' | 'DISMISSED'; created_at: string; resolution_note: string | null; reported_user_id: string; reported_name: string; reporter_name: string }
+export interface Ban { id: string; reason: string; created_at: string; expires_at: string; user_name: string; banned_by_name: string }
 export interface BotReply { reply: string; intent: string; action?: { type: 'join_room'; roomCode: string; label: string }; sources: { slug: string; title: string }[] }
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = { EASY: 'Łatwy', MEDIUM: 'Średni', HARD: 'Trudny' };

@@ -1,5 +1,5 @@
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { useApp } from '../App';
 import { Category, ChatMsg, Difficulty, DIFFICULTY_LABEL, GameEnd, RoomSettings, RoomState, Stroke, TurnEnd } from '../types';
 import DrawBoard, { BoardHandle } from './DrawBoard';
@@ -21,6 +21,7 @@ export default function Room({ code, onLeave }: { code: string; onLeave: () => v
   const [chat, setChat] = useState<ChatMsg[]>([]);
   const [turnEnd, setTurnEnd] = useState<TurnEnd | null>(null);
   const [gameEnd, setGameEnd] = useState<GameEnd | null>(null);
+  const [reportFor, setReportFor] = useState<{ id: string; name: string } | null>(null);   // kogo zgłaszamy
   const board = useRef<BoardHandle>(null);
 
   const pushChat = useCallback((m: ChatMsg) => setChat((c) => [...c.slice(-199), m]), []);
@@ -111,6 +112,7 @@ export default function Room({ code, onLeave }: { code: string; onLeave: () => v
                 </div>
                 <div className="text-right"><div className="font-mono text-sm font-bold">{p.score}</div>
                 </div>
+                {p.userId !== user.id && <button onClick={() => setReportFor({ id: p.userId, name: p.username })} title="Zgłoś gracza" aria-label={`Zgłoś gracza ${p.username}`} className="rounded p-1 text-xs text-slate-300 hover:bg-slate-100 hover:text-rose-600">⚑</button>}
               </li>
             ))}
           </ul>
@@ -148,6 +150,7 @@ export default function Room({ code, onLeave }: { code: string; onLeave: () => v
         <ChatBox messages={chat} placeholder={isDrawer && drawing ? 'Rysujesz — nie możesz zgadywać' : me?.hasGuessed && drawing ? 'Odgadłeś! Piszesz tylko do tych, którzy znają hasło' : drawing ? 'Wpisz odpowiedź i naciśnij Enter…' : 'Napisz do pokoju…'} disabled={isDrawer && drawing} onSend={(text) => emit('guess:send', { text })} />
       </div>
 
+      {reportFor && <ReportModal target={reportFor} onClose={() => setReportFor(null)} />}
       {gameEnd && <GameEndModal end={gameEnd} meId={user.id} onClose={() => setGameEnd(null)} onLeave={onLeave} />}
     </div>
   );
@@ -231,6 +234,33 @@ function GameEndModal({ end, meId, onClose, onLeave }: { end: GameEnd; meId: str
         })}
       </ol>
       <div className="mt-5 flex justify-end gap-2"><Button variant="secondary" onClick={onLeave}>Opuść pokój</Button><Button onClick={onClose}>Wróć do poczekalni</Button></div>
+    </Modal>
+  );
+}
+
+/** Okno zgłoszenia gracza: powód trafia do moderatorów (tabela moderation_reports) */
+function ReportModal({ target, onClose }: { target: { id: string; name: string }; onClose: () => void }) {
+  const { toast } = useApp();
+  const [reason, setReason] = useState('');
+  const [busy, setBusy] = useState(false);
+  const send = async () => {
+    setBusy(true);
+    try {
+      await api('POST', '/moderation/reports', { reportedUserId: target.id, reason });
+      toast('Zgłoszenie wysłane do moderatorów.', 'success');
+      onClose();
+    } catch (e) {
+      toast(e instanceof ApiError ? e.message : 'Nie udało się wysłać zgłoszenia.', 'error');
+    } finally { setBusy(false); }
+  };
+  return (
+    <Modal title={`Zgłoś gracza: ${target.name}`} onClose={onClose}>
+      <Label htmlFor="report-reason">Powód zgłoszenia</Label>
+      <textarea id="report-reason" className={inputCls} rows={4} maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Opisz, co się stało (min. 5 znaków)" autoFocus />
+      <div className="mt-4 flex justify-end gap-2">
+        <Button variant="secondary" onClick={onClose}>Anuluj</Button>
+        <Button variant="danger" onClick={send} disabled={busy || reason.trim().length < 5}>Wyślij zgłoszenie</Button>
+      </div>
     </Modal>
   );
 }

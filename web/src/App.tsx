@@ -5,6 +5,7 @@ import { User } from './types';
 import Auth from './components/Auth';
 import Knowledge from './components/Knowledge';
 import Lobby from './components/Lobby';
+import Moderation from './components/Moderation';
 import Room from './components/Room';
 
 export type ToastTone = 'info' | 'error' | 'success';
@@ -15,7 +16,7 @@ interface Ctx { user: User; socket: Socket | null; toast: (text: string, tone?: 
 const AppCtx = createContext<Ctx>(null as unknown as Ctx);
 export const useApp = () => useContext(AppCtx);
 
-type View = 'lobby' | 'kb';
+type View = 'lobby' | 'kb' | 'mod';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -44,7 +45,10 @@ export default function App() {
   useEffect(() => {
     if (!user) { setSocket(null); return; }
     const s = io('/', { auth: { token: getToken() }, transports: ['websocket', 'polling'] });
-    s.on('connect_error', (e) => { if (e.message === 'UNAUTHORIZED') { toast('Sesja wygasła. Zaloguj się ponownie.', 'error'); logout(); } });
+    s.on('connect_error', (e) => {
+      if (e.message === 'UNAUTHORIZED') { toast('Sesja wygasła. Zaloguj się ponownie.', 'error'); logout(); }
+      if (e.message === 'BANNED') { toast('Twoje konto jest zablokowane.', 'error'); logout(); }
+    });
     setSocket(s);
     return () => { s.close(); };
   }, [user?.id, toast, logout]);
@@ -65,7 +69,8 @@ export default function App() {
 
   if (!user || !ctx) return <>{toastView}<Auth onAuth={(u, token) => { setToken(token); setUser(u); }} toast={toast} /></>;
 
-  const tabs: { id: View; label: string }[] = [{ id: 'lobby', label: 'Lobby' }, { id: 'kb', label: 'Baza wiedzy' }];
+  const isStaff = user.role === 'MODERATOR' || user.role === 'ADMIN';
+  const tabs: { id: View; label: string }[] = [{ id: 'lobby', label: 'Lobby' }, { id: 'kb', label: 'Baza wiedzy' }, ...(isStaff ? [{ id: 'mod' as View, label: 'Moderacja' }] : [])];
 
   return (
     <AppCtx.Provider value={ctx}>
@@ -91,6 +96,7 @@ export default function App() {
           <div className={!roomCode && view === 'lobby' ? '' : 'hidden'}><Lobby /></div>
           {roomCode && <Room key={roomCode} code={roomCode} onLeave={() => setRoomCode(null)} />}
           {!roomCode && view === 'kb' && <Knowledge initialSlug={articleSlug} />}
+          {!roomCode && view === 'mod' && isStaff && <Moderation />}
         </main>
       </div>
     </AppCtx.Provider>

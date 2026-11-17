@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { config } from './config';
 import { query, queryOne } from './db';
 import { HttpError, wrap } from './errors';
+import { activeBan } from './bans';
 
 
 export type Role = 'GUEST' | 'PLAYER' | 'MODERATOR' | 'ADMIN';
@@ -84,6 +85,8 @@ authRouter.post('/login', wrap(async (req, res) => {
     'SELECT id, username, role, password_hash FROM users WHERE email = $1', [email]);
   const ok = row?.password_hash ? await bcrypt.compare(password, row.password_hash) : false;
   if (!row || !ok) throw new HttpError(401, 'Nieprawidłowy e-mail lub hasło.');   // ten sam komunikat dla obu błędów
+  const ban = await activeBan(row.id);                  // zablokowane konto nie może się zalogować
+  if (ban) throw new HttpError(403, `Konto jest zablokowane do ${new Date(ban.expires_at).toLocaleString('pl-PL')}. Powód: ${ban.reason}`);
   const user: AuthUser = { id: row.id, username: row.username, role: row.role };
   res.json({ token: signToken(user), user });
 }));

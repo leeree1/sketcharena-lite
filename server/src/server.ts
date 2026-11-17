@@ -6,6 +6,7 @@ import { query } from './db';
 import { authenticate, authRouter } from './auth';
 import { kbRouter } from './knowledge';
 import { chatbotRouter } from './chatbot';
+import { moderationRouter } from './moderation';
 import { HttpError } from './errors';
 import { RoomManager, roomsRouter } from './game/rooms';
 import { attachSocket, makeEmitter } from './realtime';
@@ -32,6 +33,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/kb', kbRouter);
 app.use('/api/rooms', roomsRouter(rooms));
 app.use('/api/chatbot', chatbotRouter(rooms));
+app.use('/api/moderation', moderationRouter);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof HttpError) return res.status(err.status).json({ error: { message: err.message } });
